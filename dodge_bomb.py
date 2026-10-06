@@ -18,8 +18,9 @@ DELTA: dict[int, tuple[int, int]] = {
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内か画面外かを判定し、真理値タプルを返す関数
-    引数：こうかとんRect、または、爆弾Rect
-    戻り値：横方向、縦方向の判定結果（画面内：True/画面外：False）
+    引数：
+        obj_rct: こうかとん、または爆弾のRectオブジェクト
+    戻り値：横方向、縦方向の判定結果（画面内：True/画面外：False）のタプル
     """
     yoko, tate = True, True
     if obj_rct.left < 0 or WIDTH < obj_rct.right:
@@ -30,8 +31,10 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 
 def gameover(screen: pg.Surface) -> None:
     """
-    ゲームオーバー画面を表示し、3秒間待機する関数
-    引数：screen (描画対象のスクリーン)
+    ゲームオーバー画面（背景暗転と泣き顔のこうかとん）を表示し、3秒間待機する関数
+    引数：
+        screen: 描画対象のスクリーン（pg.Surface）
+    戻り値：なし
     """
     black_surf = pg.Surface((WIDTH, HEIGHT))
     black_surf.set_alpha(150)
@@ -52,7 +55,8 @@ def gameover(screen: pg.Surface) -> None:
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     """
-    時間とともに拡大する爆弾Surfaceのリストと、加速倍率のリストを返す関数
+    時間とともに拡大する爆弾Surfaceのリストと、加速倍率のリストを生成して返す関数
+    引数：なし
     戻り値：(爆弾画像のリスト, 加速度のリスト) のタプル
     """
     bb_imgs = []
@@ -66,10 +70,12 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
 
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
     """
-    移動量タプルをキー、飛ぶ方向に対応したこうかとん画像を値とする辞書を返す関数
+    移動量タプルをキー、飛ぶ方向に対応したこうかとん画像を値とする辞書を生成して返す関数
+    引数：なし
+    戻り値：移動量タプルとそれに対応するこうかとん画像(pg.Surface)の辞書
     """
-    kk_img0 = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)  # デフォルト（左向き）
-    kk_img1 = pg.transform.flip(kk_img0, True, False)  # 右向き
+    kk_img0 = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)  
+    kk_img1 = pg.transform.flip(kk_img0, True, False)  
     return {
         (0, 0): kk_img0,
         (+5, 0): kk_img1,
@@ -85,7 +91,11 @@ def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
 def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]) -> tuple[float, float]:
     """
     爆弾からこうかとんへの方向ベクトルを計算し、正規化して返す関数
-    引数：org (爆弾Rect), dst (こうかとんRect), current_xy (現在の速度ベクトル)
+    引数：
+        org: 爆弾のRect
+        dst: こうかとんのRect
+        current_xy: 現在の速度ベクトル
+    戻り値：正規化された方向ベクトル、または計算前の速度ベクトル
     """
     dx = dst.centerx - org.centerx
     dy = dst.centery - org.centery
@@ -104,6 +114,8 @@ def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]
 def main():
     """
     逃げろ！こうかとんのメイン処理を行う関数
+    引数：なし
+    戻り値：なし
     """
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
