@@ -47,7 +47,7 @@ def gameover(screen: pg.Surface) -> None:
     screen.blit(kk_cry_img, kk_cry_rct)
 
     font = pg.font.Font(None, 80)
-    txt = font.render("Game Over", True, (255, 0, 0))
+    txt = font.render("Game Over", True, (255, 255,255))
     screen.blit(txt, [WIDTH // 2 - 150, HEIGHT // 2 - 100])
 
     pg.display.update()
