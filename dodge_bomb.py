@@ -2,6 +2,7 @@ import math
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -31,7 +32,7 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 
 def gameover(screen: pg.Surface) -> None:
     """
-    ゲームオーバー画面（背景暗転と泣き顔のこうかとん）を表示し、3秒間待機する関数
+    ゲームオーバー画面（背景暗転と泣き顔のこうかとん）を表示し、5秒間待機する関数
     引数：
         screen: 描画対象のスクリーン（pg.Surface）
     戻り値：なし
@@ -43,15 +44,19 @@ def gameover(screen: pg.Surface) -> None:
 
     kk_cry_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 0.9)
     kk_cry_rct = kk_cry_img.get_rect()
-    kk_cry_rct.center = WIDTH // 2, HEIGHT // 2
+    kk_cry_rct.center = WIDTH // 2-200, HEIGHT // 2
     screen.blit(kk_cry_img, kk_cry_rct)
+
+    kk_cry_rct2 = kk_cry_img.get_rect()
+    kk_cry_rct2.center = WIDTH // 2 + 200, HEIGHT // 2
+    screen.blit(kk_cry_img, kk_cry_rct2)
 
     font = pg.font.Font(None, 80)
     txt = font.render("Game Over", True, (255, 255,255))
-    screen.blit(txt, [WIDTH // 2 - 150, HEIGHT // 2 - 100])
+    screen.blit(txt, [WIDTH // 2-150, HEIGHT // 2-25 ])
 
     pg.display.update()
-    pg.time.wait(3000)
+    time.sleep(5)
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     """
@@ -158,8 +163,7 @@ def main():
         screen.blit(kk_img, kk_rct)
         idx = min(tmr // 500, 9)
         bb_img = bb_imgs[idx]
-        bb_rct.width = bb_img.get_rect().width
-        bb_rct.height = bb_img.get_rect().height
+        bb_rct = bb_img.get_rect(center=bb_rct.center)
 
         vx, vy = calc_orientation(bb_rct, kk_rct, (vx, vy))
         avx = vx * bb_accs[idx]
