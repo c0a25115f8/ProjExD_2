@@ -120,7 +120,7 @@ def main():
     """
     逃げろ！こうかとんのメイン処理を行う関数
     引数：なし
-    戻り値：なし
+    戻り値：特になし
     """
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
