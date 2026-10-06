@@ -16,6 +16,11 @@ DELTA: dict[int, tuple[int, int]] = {
 }
 
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
+    """
+    オブジェクトが画面内か画面外かを判定し、真理値タプルを返す関数
+    引数：こうかとんRect、または、爆弾Rect
+    戻り値：横方向、縦方向の判定結果（画面内：True/画面外：False）
+    """
     yoko, tate = True, True
     if obj_rct.left < 0 or WIDTH < obj_rct.right:
         yoko = False
@@ -24,6 +29,10 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 def gameover(screen: pg.Surface) -> None:
+    """
+    ゲームオーバー画面を表示し、3秒間待機する関数
+    引数：screen (描画対象のスクリーン)
+    """
     black_surf = pg.Surface((WIDTH, HEIGHT))
     black_surf.set_alpha(150)
     black_surf.fill((0, 0, 0))
@@ -42,6 +51,10 @@ def gameover(screen: pg.Surface) -> None:
     pg.time.wait(3000)
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    """
+    時間とともに拡大する爆弾Surfaceのリストと、加速倍率のリストを返す関数
+    戻り値：(爆弾画像のリスト, 加速度のリスト) のタプル
+    """
     bb_imgs = []
     bb_accs = [a for a in range(1, 11)]
     for r in range(1, 11):
@@ -52,6 +65,9 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     return bb_imgs, bb_accs
 
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
+    """
+    移動量タプルをキー、飛ぶ方向に対応したこうかとん画像を値とする辞書を返す関数
+    """
     kk_img0 = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)  # デフォルト（左向き）
     kk_img1 = pg.transform.flip(kk_img0, True, False)  # 右向き
     return {
@@ -67,6 +83,10 @@ def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
     }
 
 def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]) -> tuple[float, float]:
+    """
+    爆弾からこうかとんへの方向ベクトルを計算し、正規化して返す関数
+    引数：org (爆弾Rect), dst (こうかとんRect), current_xy (現在の速度ベクトル)
+    """
     dx = dst.centerx - org.centerx
     dy = dst.centery - org.centery
     dist = math.sqrt(dx**2 + dy**2)
@@ -82,6 +102,9 @@ def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]
     return current_xy
 
 def main():
+    """
+    逃げろ！こうかとんのメイン処理を行う関数
+    """
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")    
