@@ -73,6 +73,7 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
         bb_imgs.append(bb_img)
     return bb_imgs, bb_accs
 
+
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
     """
     移動量タプルをキー、飛ぶ方向に対応したこうかとん画像を値とする辞書を生成して返す関数
